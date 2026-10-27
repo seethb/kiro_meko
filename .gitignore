@@ -1,0 +1,15 @@
+# secrets
+.env
+.env.*
+!.env.example
+# not published
+docs/
+ide/
+order-service-fresh/
+order-service-run2/
+order-service-run3/
+# build and deps
+node_modules/
+dist/
+.DS_Store
+*.log

@@ -1,0 +1,41 @@
+import express from "express";
+import { memoryStore, ysqlStore } from "./eventStore.mjs";
+import { orderService } from "./orders.mjs";
+import { REASON_CODES } from "./order.mjs";
+import { seed } from "./seed.mjs";
+
+const PORT = Number(process.env.PORT || 7841);
+const store = process.env.DATABASE_URL ? await ysqlStore(process.env.DATABASE_URL) : memoryStore();
+const orders = orderService(store);
+if (store.kind === "memory") await seed(orders);
+
+const app = express();
+app.use(express.json());
+
+const handle = (fn) => async (req, res) => {
+  try {
+    res.json(await fn(req));
+  } catch (err) {
+    res.status(err.status || 500).json({ error: err.message });
+  }
+};
+
+app.get("/api/meta", (_req, res) => res.json({ store: store.kind, reasonCodes: REASON_CODES }));
+app.get("/api/orders", handle(() => orders.list()));
+app.post("/api/orders", handle((req) => orders.place(req.body)));
+app.get(
+  "/api/orders/:id",
+  handle(async (req) => {
+    const state = await orders.get(req.params.id);
+    if (!state) throw Object.assign(new Error("order not found"), { status: 404 });
+    return state;
+  }),
+);
+app.get("/api/orders/:id/history", handle((req) => orders.history(req.params.id)));
+for (const action of ["pay", "ship", "cancel", "refund"]) {
+  app.post(`/api/orders/:id/${action}`, handle((req) => orders.act(req.params.id, action, req.body)));
+}
+
+app.use(express.static(new URL("../dist", import.meta.url).pathname));
+
+app.listen(PORT, () => console.log(`order-service API on http://localhost:${PORT} (${store.kind} event store)`));

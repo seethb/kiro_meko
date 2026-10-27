@@ -1,0 +1,27 @@
+{
+  "name": "meko-decision-trail",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Decision Trail: a live view of the decisions and lessons Kiro and other MCP clients store in Meko, with ask-as-another-agent and the raw MCP wire.",
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c magenta,cyan \"node --watch server/index.mjs\" \"vite\"",
+    "build": "vite build",
+    "start": "node server/index.mjs",
+    "demo": "vite build && node server/index.mjs",
+    "test": "node --test test/records.test.mjs",
+    "test:live": "node test/live.mjs",
+    "verify:kiro": "node test/verify-kiro.mjs"
+  },
+  "engines": { "node": ">=20.12" },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.2",
+    "concurrently": "^9.1.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "vite": "^6.3.5"
+  }
+}
