@@ -37,6 +37,31 @@ npm run demo             # http://localhost:7840
 The console creates the datapack named in `MEKO_DATAPACK_NAME` if it doesn't exist. Use a fresh name for every
 recording, so the trail starts empty.
 
+### `console/.env`
+
+Copy `console/.env.example` to `console/.env` and fill it in. `.env` is git-ignored: never commit it.
+
+| Variable | Required | Default | What it is |
+|---|---|---|---|
+| `MEKO_API_KEY` | Yes | none | An API key from your Meko account (cloud.mekodata.ai), starting `mko_tkn_`. Use the **same account** Kiro signs in to, or the console won't see Kiro's records. |
+| `MEKO_MCP_URL` | No | `https://mcp.mekodata.ai/mcp` | The Meko MCP endpoint. |
+| `MEKO_DATAPACK_NAME` | No | `kiro-order-service` | The datapack to show. Created if it doesn't exist. Use the same one the workspace's steering file points at. |
+| `PORT` | No | `7840` | The console's port. |
+| `REHEARSAL` | No | off | Set to `1` to enable the console's dry-run writes (rehearsal records). Leave off when testing Kiro: a rehearsal record makes Kiro skip saving its own. |
+| `MEKO_LIVE_DATAPACK` | No | `kiro-order-service-livetest` | The datapack `npm run test:live` writes to, kept apart from the demo's. |
+
+Example:
+
+```bash
+MEKO_MCP_URL=https://mcp.mekodata.ai/mcp
+MEKO_API_KEY=mko_tkn_...
+MEKO_DATAPACK_NAME=kiro-dryrun-4
+PORT=7840
+```
+
+Kiro itself needs no key: it signs in with OAuth through the Meko power. The order service needs no `.env` either;
+set `DATABASE_URL` only to use YugabyteDB instead of the in-memory store.
+
 ## Recording the demo
 
 Do the unrecorded dry run in [`docs/dry-run.md`](docs/dry-run.md) first. It's the only proof of the Kiro side.
