@@ -3,7 +3,7 @@
 A decision made in Kiro's spec flow should reach a different tool, a later session and a teammate, with its reasoning
 intact. This demo shows that it does, on live Meko.
 
-- **Blog post, demo script and fact-check:** [`docs/blog.md`](docs/blog.md)
+- **Dry run and results:** [`docs/dry-run.md`](docs/dry-run.md), with the results of three runs in `docs/dryrun-*`
 - **`order-service-starter/`** Where the recording starts: the shop *before* the feature. One row per order, `status`
   overwritten in place, no record of who changed it or why. Kiro designs the fix.
 - **`order-service/`** Where it ends up: the reference event-sourced order service (Node + Express) with a React
@@ -46,7 +46,7 @@ Do the unrecorded dry run in [`docs/dry-run.md`](docs/dry-run.md) first. It's th
    that folder as the workspace root in Kiro, with the Meko power installed and authenticated. Set the same datapack
    in `console/.env`.
 2. Put the Decision Trail on a second screen.
-3. Follow the six scenes in [`docs/blog.md`](docs/blog.md#demo-script-about-6-minutes).
+3. In Kiro, run the prompts in sections B and C of [`docs/dry-run.md`](docs/dry-run.md), then `npm run verify:kiro`.
 
 The console's **Dry-run writes** store the records the scenes expect, so you can rehearse retrieval. They are tagged
 `console-rehearsal` in their text and badged *rehearsal* in the UI. Don't use them in the recording.
@@ -81,5 +81,5 @@ console/
   server/index.mjs                   /api/trail, /api/ask, /api/promote, /api/wire (SSE)
   web/                               Decision Trail UI
   test/live.mjs                      the core claim, against live Meko
-docs/blog.md                         blog post, demo script, fact-check
+docs/dry-run.md                      how to prove the Kiro side; results in docs/dryrun-*/RESULTS.md
 ```

@@ -2,8 +2,15 @@
 .env
 .env.*
 !.env.example
-# not published
-docs/
+# not published: only the dry-run guide and its results go out
+docs/*
+!docs/dry-run.md
+!docs/dryrun-1/
+!docs/dryrun-2/
+!docs/dryrun-3/
+docs/dryrun-*/*
+!docs/dryrun-*/RESULTS.md
+*.docx
 ide/
 order-service-fresh/
 order-service-run2/
